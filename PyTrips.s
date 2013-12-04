@@ -27,31 +27,32 @@ main:
 	mflo $t0
 	
 	for:
-		bgt $s1, $t0, forEnd
+		bgt $s1, $t0, forEnd		#for($s1 = 1; $s1 < $s4/3; $s1++)
 		addi $s2, $s1, 1
 		addi $t2, $zero, 2
 		div $s4, $t2
 		mflo $t1
 		
 		for2:
-			bgt $s2, $t1, for2End
+			bgt $s2, $t1, for2End	#for($s2 = $s1 + 1; $s2 < $s4/2; $s2++)
 			sub $s3, $s4, $s1
 			sub $s3, $s3, $s2
 			
-			mult $s1, $s1
+			mult $s1, $s1			#(a^2)
 			mflo $t3
 			
-			mult $s2, $s2
+			mult $s2, $s2			#(b^2)
 			mflo $t4
 			
-			mult $s3, $s3
+			mult $s3, $s3			#(c^2)
 			mflo $t5
 			
-			add $t6, $t3, $t4
+			add $t6, $t3, $t4		#(a + b = $t6)
 			if:
-				bne $t6, $t5, ifEnd
-				blt $s3, $zero, ifEnd
+				bne $t6, $t5, ifEnd		#if($t6 == $t5 || $s3 > 0)
+				blt $s3, $zero, ifEnd	
 				
+				#Print out answers if above is true
 				li $v0, 4
 				la $a0, A
 				syscall
@@ -89,14 +90,14 @@ main:
 				syscall
 			
 			ifEnd:
-				addi $s2, $s2, 1
+				addi $s2, $s2, 1 #increment loop
 				j for2
 				
 		for2End:
-			addi $s1, $s1, 1
+			addi $s1, $s1, 1	#increment loop
 			j for
 			
 	forEnd:
 	
-	li $v0, 10
+	li $v0, 10					#exit program
 	syscall
